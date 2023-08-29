@@ -36,7 +36,7 @@ void checkSize() {
         printw("BUT it should be %d", REQUIRED_WIDTH);
         move(2, 2);
         printw("This window is %d lines high, ", LINES);
-        printw("BUT should be %d", LINES, REQUIRED_HEIGHT);
+        printw("BUT should be %d", REQUIRED_HEIGHT);
     refresh();
         refresh();
         sleep(8);
