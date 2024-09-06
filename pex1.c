@@ -1,10 +1,10 @@
 /** pex1.c
  * =============================================================
- * Name: Your Name
- * Section:  Your Section
- * Project:  FILL IN
- * Purpose:  FILL IN
- * Documentation Statement:  FILL IN
+ * Name: Lucas Briggs 23 Aug 2024
+ * Section:  T1/2 Kloenne
+ * Project:  Pex 01
+ * Purpose:  Practice with the curses library and function creation.
+ * Documentation Statement:  None
  * ============================================================= */
 
 // Includes and defines
@@ -14,6 +14,11 @@
 
 #define REQUIRED_HEIGHT 32
 #define REQUIRED_WIDTH 80
+
+#define GREEN_BLACK 1
+#define WHITE_BLUE 2
+#define BLACK_RED 3
+#define WHITE_BLACK 4
 
 // Functions
 
@@ -45,23 +50,123 @@ void checkSize() {
     }
 }
 
+/** 
+ * @brief Draws the initials LB at a specified location
+ * @param topLine the number of the highest row of the initials
+ * @param leftCol the number of the leftmost collumn of the initials
+ * @return nothing
+ */ 
+void applyStamp(int topLine, int leftCol) {
+    // Draw the L
+    move(topLine, leftCol);
+    printw("L");
+    move(topLine + 1, leftCol);
+    printw("L");
+    move(topLine + 2, leftCol);
+    printw("U");
+    move(topLine + 3, leftCol);
+    printw("U");
+    move(topLine + 4, leftCol);
+    printw("C");
+    move(topLine + 5, leftCol);
+    printw("C");
+    move(topLine + 5, leftCol + 1);
+    printw("A");
+    move(topLine + 5, leftCol + 2);
+    printw("A");
+    move(topLine + 5, leftCol + 3);
+    printw("S");
+    move(topLine + 5, leftCol + 4);
+    printw("S");
+
+    // Draw the B
+    move(topLine, leftCol + 7);
+    printw("B");
+    move(topLine, leftCol + 9);
+    printw("B");
+    move(topLine + 1, leftCol + 7);
+    printw("R");
+    move(topLine + 1, leftCol + 11);
+    printw("R");
+    move(topLine + 2, leftCol + 7);
+    printw("I");
+    move(topLine + 2, leftCol + 9);
+    printw("I");
+    move(topLine + 3, leftCol + 7);
+    printw("G");
+    move(topLine + 3, leftCol + 11);
+    printw("G");
+    move(topLine + 4, leftCol + 7);
+    printw("G");
+    move(topLine + 4, leftCol + 11);
+    printw("G");
+    move(topLine + 5, leftCol + 7);
+    printw("S");
+    move(topLine + 5, leftCol + 9);
+    printw("S");
+}
+
+/** 
+ * @brief Draws a group of ASCII Faces at a specified location
+ * @param topLine the number of the highest row of the faces
+ * @param leftCol the number of the leftmost collumn of the faces
+ * @return nothing
+ */ 
+void sillyFaces(int topLine, int leftCol) {
+    // Draw faces
+    move(topLine, leftCol);
+    printw(":)");
+    move(topLine, leftCol + 4);
+    printw(":D");
+    move(topLine, leftCol + 8);
+    printw(":P");
+    move(topLine + 2, leftCol);
+    printw("<]:)");
+    move(topLine + 2, leftCol + 8);
+    printw("o o");
+    move(topLine + 3, leftCol + 9);
+    printw(">");
+    move(topLine + 4, leftCol);
+    printw("B)");
+    move(topLine + 4, leftCol + 3);
+    printw("*O*");
+    move(topLine + 4, leftCol + 7);
+    printw("\\___/");
+
+}
+
 // Main
 int main() {
     // Do not remove this function call
     checkSize();
 
-    // the following lines are for demonstration
-    // puposes only. Remove prior to submission
-    move(2, 2);
-    printw("This window is %d columns wide", COLS);
-    move(4, 4);
-    printw("This window is %d lines high", LINES);
-    move(6, 6);
-    printw("This window will close automatically");
-    refresh();
-    // Delay a few seconds
-    sleep(6);
-    // >>>>>>>>>>>> end demonstration code
+    // Assign color pairs
+    start_color();
+    init_pair(GREEN_BLACK, COLOR_GREEN, COLOR_BLACK);
+    init_pair(WHITE_BLUE, COLOR_WHITE, COLOR_BLUE);
+    init_pair(BLACK_RED, COLOR_BLACK, COLOR_RED);
+    init_pair(WHITE_BLACK, COLOR_WHITE, COLOR_BLACK);
+    wbkgd(stdscr, COLOR_PAIR(WHITE_BLACK)); // Sets the standard color
+
+    // Begin drawing with stamp
+    attron(COLOR_PAIR(GREEN_BLACK));    // Selects first color pallate
+    applyStamp(17, 2);                  // Applies first stamp
+    attroff(COLOR_PAIR(GREEN_BLACK));   // De-selects first color pallate
+    attron(COLOR_PAIR(WHITE_BLUE));     // Selects second color pallate
+    applyStamp(3, 27);                  // Applies second stamp
+    attroff(COLOR_PAIR(WHITE_BLUE));    // De-selects first color pallate
+    attron(COLOR_PAIR(BLACK_RED));      // Selects third color pallate
+    applyStamp(12, 30);                 // Applies third stamp
+    attroff(COLOR_PAIR(BLACK_RED));     // De-selects third color pallate
+
+    sillyFaces(15, 60);                 // Calls second function
+
+    // prevent application from ending until keystroke
+    move(30,10);                                    // move cursor near bottom of the window
+    printw("Created with Curses by Lucas Briggs");  // display a message
+    move(31,15);                                    
+    printw("Press any key to continue"); 
+    getch();                                        // wait for keystroke
 
     endwin();  // End curses mode
     return 0;
